@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "q39D9AmwYqGNFW2XIcu5RnSygmZz7ZGlktt+5Rv45NM=",
+  "Source": "ApiCamScanner",
+  "BasePath": "_content/ApiCamScanner",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
