@@ -2,6 +2,6 @@
 
 public class Document
 {
-    public string DocumentName { get; set; }
-    public int DocumentTypeId { get; set; }
+    public string DocumentName   { get; set; }
+    public int    DocumentTypeId { get; set; }
 }

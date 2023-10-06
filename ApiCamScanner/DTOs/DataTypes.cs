@@ -3,5 +3,5 @@
 public class DataTypes
 {
     public string DataTypeName { get; set; }
-    public int DocumentId { get; set; }
+    public int    DocumentId   { get; set; }
 }

@@ -22,8 +22,7 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string getAllDocumentsQuery = "SELECT * FROM documents";
-                var documents = _execute.Query<Document>(getAllDocumentsQuery);
+                var documents = _execute.Query<Document>(StoreQuery.GetAllDocumentsQuery);
 
                 return Ok(documents);
             }
@@ -38,9 +37,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string insertDocumentQuery = "INSERT INTO documents (documentName, documentTypeId) VALUES (@DocumentName, @DocumentTypeId)";
                 var parameters = new { DocumentName = document.DocumentName, DocumentTypeId = document.DocumentTypeId };
-                _execute.Execute(insertDocumentQuery, parameters);
+                _execute.Execute(StoreQuery.InsertDocumentQuery, parameters);
 
                 return Ok("Document created successfully");
             }
@@ -55,9 +53,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string deleteDocumentQuery = "DELETE FROM documents WHERE documentId = @DocumentId";
                 var parameters = new { DocumentId = documentId };
-                bool isDeleted = _execute.Execute(deleteDocumentQuery, parameters);
+                bool isDeleted = _execute.Execute(StoreQuery.DeleteDocumentQuery, parameters);
 
                 if (isDeleted)
                     return Ok("Document deleted successfully");
@@ -75,9 +72,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string updateDocumentQuery = "UPDATE documents SET documentName = @DocumentName, documentTypeId = @DocumentTypeId WHERE documentId = @DocumentId";
                 var parameters = new { DocumentName = document.DocumentName, DocumentTypeId = document.DocumentTypeId, DocumentId = documentId };
-                bool isUpdated = _execute.Execute(updateDocumentQuery, parameters);
+                bool isUpdated = _execute.Execute(StoreQuery.UpdateDocumentQuery, parameters);
 
                 if (isUpdated)
                     return Ok("Document updated successfully");

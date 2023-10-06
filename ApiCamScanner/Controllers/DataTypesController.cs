@@ -22,8 +22,7 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string getAllDataTypesQuery = "SELECT * FROM datatypes";
-                var dataTypes = _execute.Query<DataTypes>(getAllDataTypesQuery);
+                var dataTypes = _execute.Query<DataTypes>(StoreQuery.GetAllDataTypesQuery);
 
                 return Ok(dataTypes);
             }
@@ -38,9 +37,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string insertDataTypeQuery = "INSERT INTO datatypes (datatypeName, documentId) VALUES (@DataTypeName, @DocumentId)";
                 var parameters = new { DataTypeName = dataType.DataTypeName, DocumentId = dataType.DocumentId };
-                _execute.Execute(insertDataTypeQuery, parameters);
+                _execute.Execute(StoreQuery.InsertDataTypeQuery, parameters);
 
                 return Ok("Data type created successfully");
             }
@@ -55,9 +53,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string deleteDataTypeQuery = "DELETE FROM datatypes WHERE datatypeId = @DataTypeId";
                 var parameters = new { DataTypeId = dataTypeId };
-                bool isDeleted = _execute.Execute(deleteDataTypeQuery, parameters);
+                bool isDeleted = _execute.Execute(StoreQuery.DeleteDataTypeQuery, parameters);
 
                 if (isDeleted)
                     return Ok("Data type deleted successfully");
@@ -75,9 +72,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string updateDataTypeQuery = "UPDATE datatypes SET datatypeName = @DataTypeName, documentId = @DocumentId WHERE datatypeId = @DataTypeId";
                 var parameters = new { DataTypeName = dataType.DataTypeName, DocumentId = dataType.DocumentId, DataTypeId = dataTypeId };
-                bool isUpdated = _execute.Execute(updateDataTypeQuery, parameters);
+                bool isUpdated = _execute.Execute(StoreQuery.UpdateDataTypeQuery, parameters);
 
                 if (isUpdated)
                     return Ok("Data type updated successfully");

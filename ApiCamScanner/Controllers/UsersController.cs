@@ -27,9 +27,8 @@ namespace ApiCamScanner.Controllers
                     return BadRequest("User already exists");
                 }
 
-                string insertUserQuery = "INSERT INTO users (username, password, email, phoneNumber) VALUES (@username, @password, @email, @phoneNumber); SELECT LAST_INSERT_ID()";
                 var parameters = new { username = user.Username, password = user.Password, email = user.Email, phoneNumber = user.PhoneNumber };
-                _execute.ExecuteScalar<int>(insertUserQuery, parameters);
+                _execute.ExecuteScalar<int>(StoreQuery.InsertUserQuery, parameters);
 
                 return Ok("Create user is successful");
             }
@@ -41,9 +40,8 @@ namespace ApiCamScanner.Controllers
 
         private bool IsUserExists(User user)
         {
-            var selectUserQuery = "SELECT COUNT(*) FROM users WHERE username = @username OR email = @email";
             var parameters = new { username = user.Username, email = user.Email };
-            bool check = _execute.CheckExists(selectUserQuery, parameters);
+            bool check = _execute.CheckExists(StoreQuery.CheckUserExists, parameters);
             return check;
         }
 
@@ -68,9 +66,8 @@ namespace ApiCamScanner.Controllers
 
         private User AuthenticateUser(User user)
         {
-            string selectUserQuery = "SELECT * FROM users WHERE username = @username AND password = @password";
             var parameters = new { username = user.Username, password = user.Password };
-            return _execute.CheckAuthenticateUser<User>(selectUserQuery, parameters);
+            return _execute.CheckAuthenticateUser<User>(StoreQuery.CheckAuthenticateUser, parameters);
         }
 
         [HttpPost("ChangePassword")]
@@ -78,9 +75,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string updatePasswordQuery = "UPDATE users SET password = @newPassword WHERE username = @username AND password = @currentPassword";
                 var parameters = new { newPassword = request.NewPassword, username = request.Username, currentPassword = request.CurrentPassword };
-                bool isPasswordChanged = _execute.Execute(updatePasswordQuery, parameters);
+                bool isPasswordChanged = _execute.Execute(StoreQuery.UpdatePasswordQuery, parameters);
 
                 if (isPasswordChanged)
                     return Ok("Password changed successfully");

@@ -9,11 +9,11 @@ namespace ApiCamScanner.Controllers
     public class DataController : ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly ExecuteSql _execute;
+        private readonly ExecuteSql     _execute;
 
         public DataController(IConfiguration config)
         {
-            _config = config;
+            _config  = config;
             _execute = new ExecuteSql(_config.GetConnectionString("MyConnection"));
         }
 
@@ -22,8 +22,7 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string getAllDataQuery = "SELECT * FROM data";
-                var data = _execute.Query<Data>(getAllDataQuery);
+                var data = _execute.Query<Data>(StoreQuery.GetAllData);
 
                 return Ok(data);
             }
@@ -38,9 +37,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string insertDataQuery = "INSERT INTO data (dataValue, datatypeId) VALUES (@DataValue, @DataTypeId)";
                 var parameters = new { DataValue = data.DataValue, DataTypeId = data.DataTypeId };
-                _execute.Execute(insertDataQuery, parameters);
+                _execute.Execute(StoreQuery.InsertData, parameters);
 
                 return Ok("Data created successfully");
             }
@@ -55,9 +53,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string deleteDataQuery = "DELETE FROM data WHERE dataId = @DataId";
                 var parameters = new { DataId = dataId };
-                bool isDeleted = _execute.Execute(deleteDataQuery, parameters);
+                bool isDeleted = _execute.Execute(StoreQuery.DeleteData, parameters);
 
                 if (isDeleted)
                     return Ok("Data deleted successfully");
@@ -75,9 +72,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string updateDataQuery = "UPDATE data SET dataValue = @DataValue, datatypeId = @DataTypeId WHERE dataId = @DataId";
                 var parameters = new { DataValue = data.DataValue, DataTypeI = data.DataTypeId, DataId = dataId };
-                bool isUpdated = _execute.Execute(updateDataQuery, parameters);
+                bool isUpdated = _execute.Execute(StoreQuery.UpdateData, parameters);
 
                 if (isUpdated)
                     return Ok("Data updated successfully");

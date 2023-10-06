@@ -22,8 +22,7 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string getAllDocumentTypesQuery = "SELECT * FROM documenttypes";
-                var documentTypes = _execute.Query<DocumentTypes>(getAllDocumentTypesQuery);
+                var documentTypes = _execute.Query<DocumentTypes>(StoreQuery.GetAllDocumentTypesQuery);
 
                 return Ok(documentTypes);
             }
@@ -38,9 +37,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string insertDocumentTypeQuery = "INSERT INTO documenttypes (typeName, userId) VALUES (@TypeName, @UserId)";
                 var parameters = new { TypeName = documentType.TypeName, UserId = documentType.UserId };
-                _execute.Execute(insertDocumentTypeQuery, parameters);
+                _execute.Execute(StoreQuery.InsertDocumentTypeQuery, parameters);
 
                 return Ok("Document type created successfully");
             }
@@ -55,9 +53,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string deleteDocumentTypeQuery = "DELETE FROM documenttypes WHERE documentTypeId = @DocumentTypeId";
                 var parameters = new { DocumentTypeId = documentTypeId };
-                bool isDeleted = _execute.Execute(deleteDocumentTypeQuery, parameters);
+                bool isDeleted = _execute.Execute(StoreQuery.DeleteDocumentTypeQuery, parameters);
 
                 if (isDeleted)
                     return Ok("Document type deleted successfully");
@@ -75,9 +72,8 @@ namespace ApiCamScanner.Controllers
         {
             try
             {
-                string updateDocumentTypeQuery = "UPDATE documenttypes SET typeName = @TypeName, userId = @UserId WHERE documentTypeId = @DocumentTypeId";
                 var parameters = new { TypeName = documentType.TypeName, UserId = documentType.UserId, DocumentTypeId = documentTypeId };
-                bool isUpdated = _execute.Execute(updateDocumentTypeQuery, parameters);
+                bool isUpdated = _execute.Execute(StoreQuery.UpdateDocumentTypeQuery, parameters);
 
                 if (isUpdated)
                     return Ok("Document type updated successfully");
